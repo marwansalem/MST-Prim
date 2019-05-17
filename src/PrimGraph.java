@@ -41,11 +41,15 @@ public class PrimGraph {
     public int getSource(){
         return this.Source;
     }
+    public void addEdge(int to,int from,int weight){
+        graph[from].add(new Pair<>(weight,to));
+        graph[to].add(new Pair<>(weight,from)); //Graph is unidirected so Relation is Symmetric
+    }
     public static PrimGraph InputGraph(){
         Scanner sc = new Scanner(System.in);
         int n,m,s;
         System.out.println("Input Number of Vertices(N),Number of Edges(M) and Source vertex(S)");
-        System.out.println("Then for the next M lines enter Edge :from,to and weight");
+        System.out.println("Then for the next M lines enter Edge :source,destination and weight");
         n = sc.nextInt() ;
         m = sc.nextInt();
         s = sc.nextInt();
@@ -57,9 +61,11 @@ public class PrimGraph {
             from = sc.nextInt();
             to = sc.nextInt();
             weight = sc.nextInt();
-            Graph.graph[from].add(new Pair<>(weight,to)); //flip
-            Graph.graph[to].add(new Pair<>(weight,from)); //flip operands
-            //System.out.println(from+" "+to+" "+weight);
+
+
+            Graph.graph[from].add(new Pair<>(weight,to));
+            Graph.graph[to].add(new Pair<>(weight,from));
+
         }
         return Graph;
     }
@@ -77,8 +83,8 @@ public class PrimGraph {
         PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>(vertices, new Comparator<Pair<Integer, Integer>>() {
             @Override
 
-            public int compare(Pair<Integer, Integer> p1, Pair<Integer, Integer> p2) {
-                //sort using key values
+            public int compare(Pair<Integer, Integer> p1, Pair<Integer, Integer> p2) { //Key is Weight
+                //Comparison according to weight which is the key
                 int key1 = p1.getKey();
                 int key2 = p2.getKey();
                 return key1-key2;
@@ -96,8 +102,8 @@ public class PrimGraph {
             // for each vertex adjacent to thi extracted vertex : relax and do stuff
             for(int j = 0 ;j<G.graph[minVertex].size();j++){
                 Pair v = G.graph[minVertex].get(j);
-                int dest = (int)v.getValue();
-                int w    = (int)v.getKey();
+                int dest = (int)v.getValue(); //dest is index of adjacent vertex
+                int w    = (int)v.getKey();   // weight of the edge connecting extracted minimum vertex and its adjacent vertex
                 if(mst[dest] == false &&G.Key[dest]>w){
                     G.Key[dest] = w;
                     pq.offer(makePair(w,dest));
