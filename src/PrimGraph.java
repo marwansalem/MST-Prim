@@ -9,18 +9,9 @@ import javafx.util.Pair;
 public class PrimGraph {
 
     public int [] Parent; // Index of parent Node
-    public int [] Key;    // val to be updated used in Prim's Algorithm
+    public int [] Key;    // cost of joining each vertex to the Tree
     int Source;
     public ArrayList<Pair<Integer,Integer>> []graph;
-    /*static class Vertex{
-        Vertex Parent ;
-        int Key;
-        LinkedList<Vertex> adjacencyList;
-
-    }*/
-
-//    LinkedList<Vertex> a;
-    int vertice;
     public PrimGraph(int n){
         graph = new ArrayList[n];
         for(int i = 0;i<n;i++){
@@ -90,7 +81,7 @@ public class PrimGraph {
         });
 
         pq.offer(makePair(G.Key[source],source));
-        G.Parent[source] = -1;
+        G.Parent[source] = -1;  // can be used to know which vertex is the Root of the tree ( in traversals)
 
         while(!pq.isEmpty()){
             Pair<Integer,Integer> minPair = pq.poll();
